@@ -1,0 +1,13 @@
+---
+apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
+metadata:
+  name: lonk-basic-auth
+  namespace: lonk
+spec:
+  encryptedData:
+    users: AgBlDcuLH7hTtNZggRkg711IwbrsiiiyLiZoLN81ylaCzJ1LN24YJ0ggAEIoXwcHm45cPHT1KvIXt0HsGV7vBwHTxnrXGsfQfZcrm61Jy5+tepqdemNXais547JrSTrjjoljDfmxSi6cD0uNdYXZRC91sRGokJjY0Y11LP+MtzUfa/9Rk0AXVd0e4h9OJmvPvYCuVJQcDULfj6brBMMeGSAY96XUdn/RMX8OV334M0UUMTiFYMm0Cz2jTK/lia/esd1GEvkVodkn9vArJ1seqEDELnBai0ndpwN7FIPukQ006NNNDQv5jov68tbN9X7KzSNAggQ35CNQFulZOM/FyXcIlIEx8g/WfgOSKbczuZTTLK7JLiuUeNoWTzIU1IavsWORxzZpfAEjZtQ+TF6iLvvzrEvWwWoV/RzAPBA6AbhfzP1hUomthEQWGU04EGiBBomzHl+Oqqf0X/4dvyEB00iziEfuvBZo8jHMoIMp7SNn5Enx7s7XbtnLo18vhpovmg1KvYiVSYyTayPtOmcIdCN5x+1Vpu+Vw6ElEjpb+66W6r4YFhf8qr7IRoJdRekEskQ/O/ErpTgfcxORZo/eJffZ+gEGAKUIKynKYiArypy8bKam7Nekn2lNOhB0v7/Uy5x+GUQ49TrGIXNkknwH5J3Lx6KLrMmLngpGMrtmPR+QRduSAsDnid7VKr9ZXCTYlbI1kwINoNqJlpge/ncF4SqXEYaMmz3ayhiLz/CQDmgVg4vj/Iu9eQcdYrZwImr8xCEOC6IrgOyhytaMO/QCys0NE7hydwCo
+  template:
+    metadata:
+      name: lonk-basic-auth
+      namespace: lonk
