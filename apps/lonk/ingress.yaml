@@ -1,0 +1,49 @@
+# Two Ingresses: /api requires basic auth, everything else public.
+# Traefik gives the longer path higher priority.
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: lonk-public
+  namespace: lonk
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt
+spec:
+  ingressClassName: traefik
+  tls:
+    - hosts: [ lonk.ibrahimsaberi.com ]
+      secretName: lonk-tls
+  rules:
+    - host: lonk.ibrahimsaberi.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: lonk
+                port:
+                  number: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: lonk-api
+  namespace: lonk
+  annotations:
+    traefik.ingress.kubernetes.io/router.middlewares: lonk-lonk-api-auth@kubernetescrd
+spec:
+  ingressClassName: traefik
+  tls:
+    - hosts: [ lonk.ibrahimsaberi.com ]
+      secretName: lonk-tls
+  rules:
+    - host: lonk.ibrahimsaberi.com
+      http:
+        paths:
+          - path: /api
+            pathType: Prefix
+            backend:
+              service:
+                name: lonk
+                port:
+                  number: 80

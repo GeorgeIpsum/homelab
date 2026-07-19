@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lonk
+  namespace: lonk
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate # RWO volume + sqlite: never two writers
+  selector:
+    matchLabels:
+      app: lonk
+  template:
+    metadata:
+      labels:
+        app: lonk
+    spec:
+      securityContext:
+        fsGroup: 65534
+      containers:
+        - name: lonk
+          image: ghcr.io/georgeipsum/lonk:sha-21e498a
+          ports:
+            - containerPort: 8000
+          env:
+            - name: LONK_DB
+              value: /data/lonk.db
+            - name: ROCKET_ADDRESS
+              value: 0.0.0.0
+            - name: ROCKET_PORT
+              value: "8000"
+          volumeMounts:
+            - name: data
+              mountPath: /data
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8000
+            initialDelaySeconds: 3
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              memory: 256Mi
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: lonk-data
