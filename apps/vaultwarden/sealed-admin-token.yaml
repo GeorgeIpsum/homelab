@@ -1,0 +1,13 @@
+---
+apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
+metadata:
+  name: vaultwarden-admin
+  namespace: vaultwarden
+spec:
+  encryptedData:
+    ADMIN_TOKEN: AgBrJYw6SRkGKDp2uTS8+0P6M2S/TegTWgHhud4o26yEfMG2rN8EU8dY7EIsY2A2CzX1uFOIYo9Me16HblvW80cKfS7JghTXkP4MfeAyKIAzmm3s66I9/qTmGAb/ds5+28tC595TOYjGOsVHyYV2IwpG6ZadAYiL2+hC44dTsSRURGMQfhV5ndUBOwSRx7ziPhMOuGD0BV7ghQGsy7E+9Mwt8TD/e0IPA99+pIIghIagQLw2ZP+Tbx2hWbvdYQUSqE+ldufxjN0v60QNWmPSRrqgiRnhQKWoPG6IjaBT7cqT1saPfk9gy03/QjOPe6RjpYrhFGxpQwCfHFhC4SyOCFBXJK0MzWJqevp+vIVfxfv0FZ1rkIwnG3vo84l3gvfPy9a0yMZIFFwQcO6+nxduyJfX40M4HYfYZ6nU4k5KTzgJl4LBSWxkGzQv3Wd+vlhM9OUq0up+2Jp/2EoVTs7QXbxkdNsM8sRmBWxlrSCcc4vxUZm0e9N37e21r9DMCB35b3wdpC1/DTvLr4RT1koYZdUl5SCKPQ0Y+g4IK3PEUz6AUeAyKegCwXezRVx14vmhYIVUZ/RDxxM0x41k97/dMqdRCSf4BXKLb5VZHZF2RM7kan+4Bqy8ii8qUOsspVfAoOhPI0V95FyijYz+jCGxGd6Yziyr8/cJ0vpL8aO/Ftk7ZbUCv89j2DrmAb6JNOjNK2/+ZBf3PkUL11M7qjelu4wsk+mExkRJ1bXwmHW/th0jTapRdS9ZpC3353lXLBGI8L4=
+  template:
+    metadata:
+      name: vaultwarden-admin
+      namespace: vaultwarden
