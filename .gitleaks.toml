@@ -1,0 +1,6 @@
+[extend]
+useDefault = true
+
+[allowlist]
+# SealedSecret manifests contain only asymmetric ciphertext
+paths = ['''.*sealed.*\.yaml''']
