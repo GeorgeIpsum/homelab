@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: ebloved
-          image: ghcr.io/georgeipsum/ebloved:sha-c641983
+          image: ghcr.io/georgeipsum/ebloved:sha-0f95efa
           ports:
             - containerPort: 4000
           env:
