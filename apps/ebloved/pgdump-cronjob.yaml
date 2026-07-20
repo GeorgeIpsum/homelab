@@ -31,7 +31,7 @@ spec:
                 claimName: ebloved-pgdump
           containers:
             - name: pgdump
-              image: postgres:17
+              image: postgres:18
               env:
                 - name: DATABASE_URL
                   valueFrom:
