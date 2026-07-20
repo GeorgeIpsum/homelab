@@ -1,0 +1,33 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ebloved
+  namespace: ebloved
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt
+spec:
+  ingressClassName: traefik
+  tls:
+    - hosts: [ ebloved.com, www.ebloved.com ]
+      secretName: ebloved-tls
+  rules:
+    - host: ebloved.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: ebloved
+                port:
+                  number: 80
+    - host: www.ebloved.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: ebloved
+                port:
+                  number: 80

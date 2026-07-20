@@ -1,0 +1,45 @@
+# Nightly pg_dump of ebloved-db into a PVC that the host restic timer (02:47 <
+# 03:23) already sweeps. Custom-format dump; keeps 7 daily rotations by weekday.
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: ebloved-pgdump
+  namespace: ebloved
+spec:
+  accessModes: [ ReadWriteOnce ]
+  storageClassName: local-path
+  resources:
+    requests:
+      storage: 2Gi
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: ebloved-pgdump
+  namespace: ebloved
+spec:
+  schedule: "47 2 * * *"
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: Never
+          volumes:
+            - name: dumps
+              persistentVolumeClaim:
+                claimName: ebloved-pgdump
+          containers:
+            - name: pgdump
+              image: postgres:17
+              env:
+                - name: DATABASE_URL
+                  valueFrom:
+                    secretKeyRef:
+                      name: ebloved-db-app
+                      key: uri
+              command: ["/bin/sh", "-c"]
+              args: ["pg_dump \"$DATABASE_URL\" -Fc -f /dumps/ebloved-$(date +%u).dump"]
+              volumeMounts:
+                - name: dumps
+                  mountPath: /dumps
