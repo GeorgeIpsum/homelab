@@ -46,7 +46,7 @@ spec:
             - name: DOMAIN
               value: https://vault.ebloved.com
             - name: SIGNUPS_ALLOWED
-              value: "true" # flipped to "false" once the owner account exists
+              value: "false" # owner account exists; registration closed
             - name: ADMIN_TOKEN
               valueFrom:
                 secretKeyRef:
