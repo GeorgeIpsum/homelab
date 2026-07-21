@@ -21,6 +21,15 @@ spec:
       - pg_documentdb
     parameters:
       cron.database_name: "postgres"
+    # DocumentDB (and pg_cron) open internal libpq self-connections to
+    # localhost — e.g. documentdb_api_internal.index_build_is_in_progress
+    # during count() on an indexed collection. CNPG's managed pg_hba requires
+    # auth for host connections, so those self-connections fail with
+    # "fe_sendauth: no password supplied". Trust localhost (single non-exposed
+    # pod; only in-pod processes can originate these) to allow them.
+    pg_hba:
+      - host all all 127.0.0.1/32 trust
+      - host all all ::1/128 trust
   bootstrap:
     initdb:
       postInitSQL:
