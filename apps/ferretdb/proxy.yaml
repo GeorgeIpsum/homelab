@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ferretdb
+  namespace: ferretdb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ferretdb
+  template:
+    metadata:
+      labels:
+        app: ferretdb
+    spec:
+      containers:
+        - name: ferretdb
+          image: ghcr.io/ferretdb/ferretdb:2.7.0
+          ports:
+            - containerPort: 27017
+          env:
+            - name: PGUSER
+              valueFrom:
+                secretKeyRef:
+                  name: ferretdb-db-superuser
+                  key: username
+            - name: PGPASS
+              valueFrom:
+                secretKeyRef:
+                  name: ferretdb-db-superuser
+                  key: password
+            - name: FERRETDB_POSTGRESQL_URL
+              value: postgres://$(PGUSER):$(PGPASS)@ferretdb-db-rw.ferretdb.svc:5432/postgres
+          readinessProbe:
+            tcpSocket:
+              port: 27017
+            initialDelaySeconds: 5
+          resources:
+            requests:
+              cpu: 50m
+              memory: 128Mi
+            limits:
+              memory: 512Mi
