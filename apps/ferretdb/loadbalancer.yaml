@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ferretdb-lb
+  namespace: ferretdb
+spec:
+  type: LoadBalancer
+  selector:
+    app: ferretdb
+  ports:
+    - name: mongo
+      port: 27017
+      targetPort: 27017
