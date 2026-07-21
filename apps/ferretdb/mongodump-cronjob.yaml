@@ -32,7 +32,7 @@ spec:
                 claimName: ferretdb-dump
           containers:
             - name: mongodump
-              image: mongodb/mongodb-database-tools:latest
+              image: mongo:latest # legacy image, but bundles mongodump/mongorestore
               env:
                 - name: PGUSER
                   valueFrom: { secretKeyRef: { name: ferretdb-db-superuser, key: username } }
