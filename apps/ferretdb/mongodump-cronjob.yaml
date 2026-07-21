@@ -1,0 +1,46 @@
+# Nightly mongodump of FerretDB → PVC swept by the host restic timer.
+# mongodump (not pg_dump): a DocumentDB pg_dump only restores where the
+# extension already exists; the Mongo-wire archive is portable.
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: ferretdb-dump
+  namespace: ferretdb
+spec:
+  accessModes: [ ReadWriteOnce ]
+  storageClassName: local-path
+  resources:
+    requests:
+      storage: 2Gi
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: ferretdb-mongodump
+  namespace: ferretdb
+spec:
+  schedule: "37 2 * * *"   # before the 03:17 host restic run
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: Never
+          volumes:
+            - name: dumps
+              persistentVolumeClaim:
+                claimName: ferretdb-dump
+          containers:
+            - name: mongodump
+              image: mongodb/mongodb-database-tools:latest
+              env:
+                - name: PGUSER
+                  valueFrom: { secretKeyRef: { name: ferretdb-db-superuser, key: username } }
+                - name: PGPASS
+                  valueFrom: { secretKeyRef: { name: ferretdb-db-superuser, key: password } }
+              command: ["/bin/sh","-c"]
+              args:
+                - mongodump --uri="mongodb://$PGUSER:$PGPASS@ferretdb.ferretdb.svc:27017/" --archive=/dumps/ferretdb-$(date +%u).archive
+              volumeMounts:
+                - name: dumps
+                  mountPath: /dumps
